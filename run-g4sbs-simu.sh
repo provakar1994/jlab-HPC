@@ -20,6 +20,9 @@ outfilebase=$4
 outdirpath=$5
 run_on_ifarm=$6
 g4sbsenv=$7
+ANAVER=$8      # Analyzer version
+useJLABENV=$9  # Use 12gev_env instead of modulefiles?
+JLABENV=${10}  # /site/12gev_phys/softenv.sh version
 
 # paths to necessary libraries (ONLY User specific part) ---- #
 export G4SBS=$g4sbsenv
@@ -32,20 +35,19 @@ if [[ $run_on_ifarm == 1 ]]; then
 fi
 echo -e 'Work directory = '$SWIF_JOB_WORK_DIR
 
+# Enabling module
 MODULES=/etc/profile.d/modules.sh 
-
 if [[ $(type -t module) != function && -r ${MODULES} ]]; then 
-source ${MODULES} 
+    source ${MODULES} 
 fi 
-
-if [ -d /apps/modulefiles ]; then 
-module use /apps/modulefiles 
-fi 
-
-# setup farm environments
-source /site/12gev_phys/softenv.sh 2.5
-module load gcc/9.2.0 
-ldd $G4SBS/bin/g4sbs |& grep not
+# Choosing software environment
+if [[ (! -d /group/halla/modulefiles) || ($useJLABENV -eq 1) ]]; then 
+    source /site/12gev_phys/softenv.sh $JLABENV
+else 
+    module use /group/halla/modulefiles
+    module load analyzer/$ANAVER
+    module list
+fi
 
 # Setup g4sbs specific environments
 source $G4SBS/bin/g4sbs.sh

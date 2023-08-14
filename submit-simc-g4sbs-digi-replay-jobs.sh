@@ -62,7 +62,7 @@ elif [[ ! -d $G4SBS ]]; then
     echo -e '\nERROR!! Please set "G4SBS" path properly in setenv.sh script!\n'; exit;
 elif [[ ! -d $LIBSBSDIG ]]; then
     echo -e '\nERROR!! Please set "LIBSBSDIG" path properly in setenv.sh script!\n'; exit;
-elif [[ ! -d $ANALYZER ]]; then
+elif [[ (! -d $ANALYZER) && ($useJLABENV -eq 1) ]]; then
     echo -e '\nERROR!! Please set "ANALYZER" path properly in setenv.sh script!\n'; exit;
 elif [[ ! -d $SBSOFFLINE ]]; then
     echo -e '\nERROR!! Please set "SBSOFFLINE" path properly in setenv.sh script!\n'; exit;
@@ -209,12 +209,12 @@ do
     postscript=$infile'_job_'$i'.mac'
     g4sbsjobname=$infile'_job_'$i
 
-    g4sbsscript=$SCRIPT_DIR'/run-g4sbs-w-simc.sh'
+    g4sbsscript=$SCRIPT_DIR'/run-g4sbs-w-simc.sh'' '$infile' '$postscript' '$nevents' '$outfilebase' '$outdirpath' '$simcoutfile' '$run_on_ifarm' '$G4SBS' '$ANAVER' '$useJLABENV' '$JLABENV
 
     if [[ $run_on_ifarm -ne 1 ]]; then
-	swif2 add-job -workflow $workflowname -partition production -name $g4sbsjobname -cores 1 -disk 5GB -ram 1500MB $g4sbsscript $infile $postscript $nevents $outfilebase $outdirpath $simcoutfile $run_on_ifarm $G4SBS
+	swif2 add-job -workflow $workflowname -partition production -name $g4sbsjobname -cores 1 -disk 5GB -ram 1500MB $g4sbsscript
     else
-	$g4sbsscript $infile $postscript $nevents $outfilebase $outdirpath $simcoutfile $run_on_ifarm $G4SBS
+	$g4sbsscript
     fi
 
     # now, it's time for digitization
@@ -222,24 +222,24 @@ do
     sbsdigjobname=$infile'_digi_job_'$i
     sbsdiginfile=$outdirpath'/'$outfilebase'.root'
 
-    sbsdigscript=$SCRIPT_DIR'/run-sbsdig.sh'
+    sbsdigscript=$SCRIPT_DIR'/run-sbsdig.sh'' '$txtfile' '$sbsdiginfile' '$gemconfig' '$run_on_ifarm' '$G4SBS' '$LIBSBSDIG' '$ANAVER' '$useJLABENV' '$JLABENV
     
     if [[ $run_on_ifarm -ne 1 ]]; then
-	swif2 add-job -workflow $workflowname -antecedent $g4sbsjobname -partition production -name $sbsdigjobname -cores 1 -disk 5GB -ram 1500MB $sbsdigscript $txtfile $sbsdiginfile $gemconfig $run_on_ifarm $G4SBS $LIBSBSDIG
+	swif2 add-job -workflow $workflowname -antecedent $g4sbsjobname -partition production -name $sbsdigjobname -cores 1 -disk 5GB -ram 1500MB $sbsdigscript
     else
-	$sbsdigscript $txtfile $sbsdiginfile $gemconfig $run_on_ifarm $G4SBS $LIBSBSDIG
+	$sbsdigscript
     fi
 
     # finally, lets replay the digitized data
     digireplayinfile=$infile'_job_'$i
     digireplayjobname=$infile'_digi_replay_job_'$i
 
-    digireplayscript=$SCRIPT_DIR'/run-digi-replay.sh'
+    digireplayscript=$SCRIPT_DIR'/run-digi-replay.sh'' '$digireplayinfile' '$sbsconfig' '-1' '$outdirpath' '$run_on_ifarm' '$ANALYZER' '$SBSOFFLINE' '$SBS_REPLAY' '$ANAVER' '$useJLABENV' '$JLABENV
     
     if [[ $run_on_ifarm -ne 1 ]]; then
-	swif2 add-job -workflow $workflowname -antecedent $sbsdigjobname -partition production -name $digireplayjobname -cores 1 -disk 5GB -ram 1500MB $digireplayscript $digireplayinfile $sbsconfig -1 $outdirpath $run_on_ifarm $ANALYZER $SBSOFFLINE $SBS_REPLAY
+	swif2 add-job -workflow $workflowname -antecedent $sbsdigjobname -partition production -name $digireplayjobname -cores 1 -disk 5GB -ram 1500MB $digireplayscript
     else
-	$digireplayscript $digireplayinfile $sbsconfig -1 $outdirpath $run_on_ifarm $ANALYZER $SBSOFFLINE $SBS_REPLAY
+	$digireplayscript
     fi
 done
 

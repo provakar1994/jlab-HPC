@@ -24,7 +24,7 @@ workflowname=
 # Checking the environments
 if [[ ! -d $SCRIPT_DIR ]]; then
     echo -e '\nERROR!! Please set "SCRIPT_DIR" path properly in setenv.sh script!\n'; exit;
-elif [[ ! -d $ANALYZER ]]; then
+elif [[ (! -d $ANALYZER) && ($useJLABENV -eq 1) ]]; then
     echo -e '\nERROR!! Please set "ANALYZER" path properly in setenv.sh script!\n'; exit;
 elif [[ ! -d $SBSOFFLINE ]]; then
     echo -e '\nERROR!! Please set "SBSOFFLINE" path properly in setenv.sh script!\n'; exit;
@@ -70,12 +70,12 @@ do
     digireplayinfile=$inputfile'_job_'$i
     digireplayjobname=$inputfile'_digi_replay_job_'$i
 
-    digireplayscript=$SCRIPT_DIR'/run-digi-replay.sh'
+    digireplayscript=$SCRIPT_DIR'/run-digi-replay.sh'' '$digireplayinfile' '$sbsconfig' '$nevents' '$outdirpath' '$run_on_ifarm' '$ANALYZER' '$SBSOFFLINE' '$SBS_REPLAY' '$ANAVER' '$useJLABENV' '$JLABENV
     
     if [[ $run_on_ifarm -ne 1 ]]; then
-	swif2 add-job -workflow $workflowname -partition production -name $digireplayjobname -cores 1 -disk 5GB -ram 1500MB $digireplayscript $digireplayinfile $sbsconfig $nevents $outdirpath $run_on_ifarm $ANALYZER $SBSOFFLINE $SBS_REPLAY
+	swif2 add-job -workflow $workflowname -partition production -name $digireplayjobname -cores 1 -disk 5GB -ram 1500MB $digireplayscript
     else
-	$digireplayscript $digireplayinfile $sbsconfig $nevents $outdirpath $run_on_ifarm $ANALYZER $SBSOFFLINE $SBS_REPLAY
+	$digireplayscript
     fi
 done
 

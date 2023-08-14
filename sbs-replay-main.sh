@@ -32,7 +32,7 @@ type=0  # 1 = multi run from txt file, 0 = single run
 # Checking the environments
 if [[ ! -d $SCRIPT_DIR ]]; then
     echo -e '\nERROR!! Please set "SCRIPT_DIR" path properly in setenv.sh script!\n'; exit;
-elif [[ ! -d $ANALYZER ]]; then
+elif [[ (! -d $ANALYZER) && ($useJLABENV -eq 1) ]]; then
     echo -e '\nERROR!! Please set "ANALYZER" path properly in setenv.sh script!\n'; exit;
 elif [[ ! -d $SBSOFFLINE ]]; then
     echo -e '\nERROR!! Please set "SBSOFFLINE" path properly in setenv.sh script!\n'; exit;
@@ -203,7 +203,7 @@ fi
 
 #if a single run then we do a single job
 if [ $type -eq 0 ]; then
-    submit-sbs-jobs.sh $runs $prefix $nevents $maxsegments $segments_per_job $use_sbs_gems $run_on_ifarm $outdirpath $workflowname $SCRIPT_DIR $ANALYZER $SBSOFFLINE $SBS_REPLAY $DATA_PATH
+    $SCRIPT_DIR'/submit-sbs-jobs.sh' $runs $prefix $nevents $maxsegments $segments_per_job $use_sbs_gems $run_on_ifarm $outdirpath $workflowname $SCRIPT_DIR $ANALYZER $SBSOFFLINE $SBS_REPLAY $DATA_PATH $ANAVER $useJLABENV $JLABENV
 fi
 
 
@@ -217,7 +217,7 @@ if [ $type -eq 1 ]; then
 	    line_num=$((line_num + 1))
 	    continue
 	fi
-	submit-sbs-jobs.sh $runs $prefix $nevents $maxsegments $segments_per_job $use_sbs_gems $run_on_ifarm $outdirpath $workflowname $SCRIPT_DIR $ANALYZER $SBSOFFLINE $SBS_REPLAY $DATA_PATH
+	$SCRIPT_DIR'/submit-sbs-jobs.sh' $runs $prefix $nevents $maxsegments $segments_per_job $use_sbs_gems $run_on_ifarm $outdirpath $workflowname $SCRIPT_DIR $ANALYZER $SBSOFFLINE $SBS_REPLAY $DATA_PATH $ANAVER $useJLABENV $JLABENV
     done < $runs
 fi
 

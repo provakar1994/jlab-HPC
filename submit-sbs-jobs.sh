@@ -24,6 +24,9 @@ analyzerenv=${11}
 sbsofflineenv=${12}
 sbsreplayenv=${13}
 datapath=${14}
+ANAVER=${15}     # Analyzer version
+useJLABENV=${16} # Use 12gev_env instead of modulefiles?
+JLABENV=${17}    # /site/12gev_phys/softenv.sh version
 
 #Set environments from inputs above
 export SCRIPT_DIR=$scriptdir
@@ -94,7 +97,7 @@ do
 	    echo 'Submitting job '$jobname' with '$nsegments' segments, runnum='$runnum
 	    #		echo 'Input string = '$inputstring
 	    
-	    scriptrun=$script' '$runnum' '$nevents' 0 '$prefix' '$firstsegment' '$nsegments' '$use_sbs_gems' '$DATA_PATH' '$outdirpath' '$run_on_ifarm' '$ANALYZER' '$SBSOFFLINE' '$SBS_REPLAY
+	    scriptrun=$script' '$runnum' '$nevents' 0 '$prefix' '$firstsegment' '$nsegments' '$use_sbs_gems' '$DATA_PATH' '$outdirpath' '$run_on_ifarm' '$ANALYZER' '$SBSOFFLINE' '$SBS_REPLAY' '$ANAVER' '$useJLABENV' '$JLABENV
 	    addjobcmd='add-job -workflow '$workflowname' -partition production -name '$jobname' -cores 1 -disk 25GB -ram 3000MB '$inputstring' '$scriptrun
 	    
 	    if [[ $run_on_ifarm -ne 1 ]]; then
@@ -115,7 +118,7 @@ do
 	    echo 'Submitting job '$jobname' with '$nsegments' segments, runnum = '$runnum
 #	    echo 'Input string = "'$inputstring'"'
 
-	    scriptrun=$script' '$runnum' '$nevents' 0 '$prefix' '$firstsegment' '$nsegments' '$use_sbs_gems' '$DATA_PATH' '$outdirpath' '$run_on_ifarm' '$ANALYZER' '$SBSOFFLINE' '$SBS_REPLAY' '$usesbsgems
+	    scriptrun=$script' '$runnum' '$nevents' 0 '$prefix' '$firstsegment' '$nsegments' '$use_sbs_gems' '$DATA_PATH' '$outdirpath' '$run_on_ifarm' '$ANALYZER' '$SBSOFFLINE' '$SBS_REPLAY' '$ANAVER' '$useJLABENV' '$JLABENV
 	    addjobcmd='add-job -workflow '$workflowname' -partition production -name '$jobname' -cores 1 -disk 25GB -ram 3000MB '$inputstring' '$scriptrun
 
 	    if [[ $run_on_ifarm -ne 1 ]]; then

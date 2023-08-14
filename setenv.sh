@@ -13,6 +13,25 @@
 # ** Do not tamper with this sticker! Log any updates to the script above.   #
 # -------------------------------------------------------------------------- #
 
+# ********************************************** # 
+# Choosing the proper softare environment for    #
+# root, analyzer, gcc, python, & evio            #
+# - It can be done in the following two ways.    #
+# - The choice affects all the `run-` scripts.   #
+# - The chosen software environment should have  #
+#   been used to build all the additional        #
+#   libraries (ie simc, g4sbs, libsbsdig, etc.). #  
+# ---------------------------------------------- #
+# 1) Using /group/halla/modulefiles (Recommended)
+# E.g. ANAVER='1.7.4' loads analyzer/1.7.4. It comes with:
+# root/6.26.10, gcc/12.3.0, python/3.11.4,x & evio/5.3
+ANAVER='1.7.4'  # Analyzer version
+# 2) Using /site/12gev_phys/softenv.sh (NOT recommended!) 
+# ** $ANALYZER will be needed for this
+useJLABENV=1    # =1, forces 12gev_phys environment
+JLABENV='2.6'   # /site/12gev_phys/softenv.sh version
+# ********************************************** # 
+
 # Required by all
 export SCRIPT_DIR=/w/halla-scshelf2102/sbs/seeds/jlab-HPC
 
@@ -30,7 +49,8 @@ export ANALYZER=/w/halla-scshelf2102/sbs/seeds/ANALYZER/install
 export SBSOFFLINE=/w/halla-scshelf2102/sbs/seeds/SBS_OFFLINE/install
 export SBS_REPLAY=/w/halla-scshelf2102/sbs/seeds/SBS_Replay_upstream/SBS-replay
 
-#Path to data directories
-#The path is written this way below becauses strings will need to be added to the left side of them, ie /cache/$GMN_DATA_PATH
+# Path to data directories (NOT User Specific)
+# The path is written this way below becauses strings will need
+# to be added to the left side of them, ie /cache/$GMN_DATA_PATH
 export GMN_DATA_PATH=halla/sbs/raw
 export GEN_DATA_PATH=halla/sbs/GEnII/raw

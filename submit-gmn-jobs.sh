@@ -27,7 +27,7 @@ outdirpath=
 # Checking the environments
 if [[ ! -d $SCRIPT_DIR ]]; then
     echo -e '\nERROR!! Please set "SCRIPT_DIR" path properly in setenv.sh script!\n'; exit;
-elif [[ ! -d $ANALYZER ]]; then
+elif [[ (! -d $ANALYZER) && ($useJLABENV -eq 1) ]]; then
     echo -e '\nERROR!! Please set "ANALYZER" path properly in setenv.sh script!\n'; exit;
 elif [[ ! -d $SBSOFFLINE ]]; then
     echo -e '\nERROR!! Please set "SBSOFFLINE" path properly in setenv.sh script!\n'; exit;
@@ -133,15 +133,15 @@ do
 	    echo 'Adding new swif2 job, runnum='$runnum', segment='$i     
 	    if [ $i -gt 0 ]; then
 		echo 'segment '$i' also requires first segment'
-		swif2 add-job -workflow $workflowname -partition production -name $jobname -cores 1 -disk 25GB -ram 1500MB -input $cachefile $mssfilename -input $cachefirst $mssfirst $script $runnum $nevents 0 e1209019 $i 1 $DATA_DIR $outdirpath $run_on_ifarm $ANALYZER $SBSOFFLINE $SBS_REPLAY
+		swif2 add-job -workflow $workflowname -partition production -name $jobname -cores 1 -disk 25GB -ram 1500MB -input $cachefile $mssfilename -input $cachefirst $mssfirst $script $runnum $nevents 0 e1209019 $i 1 $DATA_DIR $outdirpath $run_on_ifarm $ANALYZER $SBSOFFLINE $SBS_REPLAY $ANAVER $useJLABENV $JLABENV
 	    else
 		echo 'segment '$i' IS first segment'
-		swif2 add-job -workflow $workflowname -partition production -name $jobname -cores 1 -disk 25GB -ram 1500MB -input $cachefile $mssfilename $script $runnum $nevents 0 e1209019 $i 1 $DATA_DIR $outdirpath $run_on_ifarm $ANALYZER $SBSOFFLINE $SBS_REPLAY
+		swif2 add-job -workflow $workflowname -partition production -name $jobname -cores 1 -disk 25GB -ram 1500MB -input $cachefile $mssfilename $script $runnum $nevents 0 e1209019 $i 1 $DATA_DIR $outdirpath $run_on_ifarm $ANALYZER $SBSOFFLINE $SBS_REPLAY $ANAVER $useJLABENV $JLABENV
 	    fi
 	    
 	else
 	    if [ -f "$cachefile" ]; then
-		$script $runnum $nevents 0 e1209019 $i 1 $DATA_DIR $outdirpath $run_on_ifarm $ANALYZER $SBSOFFLINE $SBS_REPLAY
+		$script $runnum $nevents 0 e1209019 $i 1 $DATA_DIR $outdirpath $run_on_ifarm $ANALYZER $SBSOFFLINE $SBS_REPLAY $ANAVER $useJLABENV $JLABENV
 	    else
 		echo -e "!*!ERROR!!" $cachefile "doesn't exist!"
 	    fi

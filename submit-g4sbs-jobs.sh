@@ -79,12 +79,12 @@ do
     postscript=$preinit'_job_'$i'.mac'
     g4sbsjobname=$preinit'_job_'$i
 
-    g4sbsscript=$SCRIPT_DIR'/run-g4sbs-simu.sh'
+    g4sbsscript=$SCRIPT_DIR'/run-g4sbs-simu.sh'' '$preinit' '$postscript' '$nevents' '$outfilebase' '$outdirpath' '$run_on_ifarm' '$G4SBS' '$ANAVER' '$useJLABENV' '$JLABENV
 
     if [[ $run_on_ifarm -ne 1 ]]; then
-	swif2 add-job -workflow $workflowname -partition production -name $g4sbsjobname -cores 1 -disk 5GB -ram 1500MB $g4sbsscript $preinit $postscript $nevents $outfilebase $outdirpath $run_on_ifarm $G4SBS
+	swif2 add-job -workflow $workflowname -partition production -name $g4sbsjobname -cores 1 -disk 5GB -ram 1500MB $g4sbsscript
     else
-	$g4sbsscript $preinit $postscript $nevents $outfilebase $outdirpath $run_on_ifarm $G4SBS
+	$g4sbsscript
     fi
 
     # time to aggregate g4sbs job summary
