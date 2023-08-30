@@ -103,9 +103,9 @@ fi
 
 for ((i=0; i<=$maxsegments; i++))
 do
-    fnameout_pattern='/farm_out/pdbforce/pdatta_gmn_'$runnum'_segment'$i'.out'
-    #    sbatch --output=$fnameout_pattern run_GMN_sbatch_nohodo.sh $runnum -1 0 e1209019 $i 1
-    jobname='pdatta_gmn_'$runnum'_segment'$i
+    #fnameout_pattern='/farm_out/pdbforce/pdatta_gmn_'$runnum'_segment'$i'.out'
+    #sbatch --output=$fnameout_pattern run_GMN_sbatch_nohodo.sh $runnum -1 0 e1209019 $i 1
+    jobname=${USER}'_gmn_'$runnum'_segment'$i
     
     # look for first segment on cache disk:
     firstsegname='e1209019_'$runnum'.evio.0.0'
