@@ -17,15 +17,15 @@ source setenv.sh
 preinit=$1      # G4SBS preinit macro w/o file extention (Must be located at $G4SBS/scripts)
 sbsconfig=$2    # SBS configuration (Valid options: 4,7,11,14,8,9)
 nevents=$3      # No. of events to generate per job
-fjobid=$4       # first job id
+fjobid=$4       # event number to start at
 njobs=$5        # total no. of jobs to submit 
 run_on_ifarm=$6 # 1=>Yes (If true, runs all jobs on ifarm)
 # Workflow name (Not relevant if run_on_ifarm = 1)
-workflowname=
+workflowname=inelastic_sbs8_0p_g4sbs_deeN
 # Specify a directory on volatile to store g4sbs, sbsdig, & replayed files.
 # Working on a single directory is convenient & safe for the above mentioned
 # three processes to run smoothly.
-outdirpath=
+outdirpath=/lustre19/expphy/volatile/halla/sbs/seeds/sbs8_inelastic
 
 # Checking the environments
 if [[ ! -d $SCRIPT_DIR ]]; then

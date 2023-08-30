@@ -28,8 +28,8 @@
 ANAVER='1.7.4'  # Analyzer version
 # 2) Using /site/12gev_phys/softenv.sh (NOT recommended!) 
 # ** $ANALYZER will be needed for this
-useJLABENV=1    # =1, forces 12gev_phys environment
-JLABENV='2.6'   # /site/12gev_phys/softenv.sh version
+#useJLABENV=1    # =1, forces 12gev_phys environment
+#JLABENV='2.6'   # /site/12gev_phys/softenv.sh version
 # ********************************************** # 
 
 # Required by all
@@ -45,9 +45,9 @@ export SIMC=/w/halla-scshelf2102/sbs/seeds/simc_gfortran
 export LIBSBSDIG=/w/halla-scshelf2102/sbs/seeds/dig/install
 
 # Required by the scripts running replay (data or MC) jobs
-export ANALYZER=/w/halla-scshelf2102/sbs/seeds/ANALYZER/install
-export SBSOFFLINE=/w/halla-scshelf2102/sbs/seeds/SBS_OFFLINE/install
-export SBS_REPLAY=/w/halla-scshelf2102/sbs/seeds/SBS_Replay_upstream/SBS-replay
+export ANALYZER=/u/group/halla/apps/analyzer/1.7.4/gcc12/RelWithDebInfo
+export SBSOFFLINE=/w/halla-scshelf2102/sbs/seeds/sbsoffline/install
+export SBS_REPLAY=/w/halla-scshelf2102/sbs/seeds/sbsoffline/SBS-replay
 
 # Path to data directories (NOT User Specific)
 # The path is written this way below becauses strings will need

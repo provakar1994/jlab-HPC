@@ -23,9 +23,9 @@ maxsegments=-1
 segments_per_job=-1
 use_sbs_gems=             # 0 = no sbs gems, 1 = use sbs gems
 # Workflow name (Not relevant if run_on_ifarm = 1)
-workflowname=test_workflow
+workflowname=gmn_qreplay_run_13768
 # Specify a directory on volatile to store replayed ROOT files
-outdirpath=
+outdirpath=/lustre19/expphy/volatile/halla/sbs/seeds
 
 type=0  # 1 = multi run from txt file, 0 = single run
 
