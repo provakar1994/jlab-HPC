@@ -20,9 +20,9 @@ nevents=$2      # total no. of events to replay
 maxsegments=$3  # maximum no. of segments (or jobs) to analyze
 run_on_ifarm=$4 # 1=>Yes (If true, runs all jobs on ifarm)
 # Workflow name (Not relevant if run_on_ifarm = 1)
-workflowname=
+#workflowname=
 # Specify a directory on volatile to store replayed ROOT files
-outdirpath=
+#outdirpath=
 
 # Checking the environments
 if [[ ! -d $SCRIPT_DIR ]]; then
