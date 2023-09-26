@@ -2,17 +2,27 @@
 
 ## --------
 ## This script can be used to automate submiting replay jobs for 
-## multiple runs with multiple segments.
+## multiple runs with multiple segments to JLab farm in the batch mode.
 ## --------
 ## P. Datta <pdbforce@jlab.org> CREATED 06/16/23
 
-export SCRIPT_DIR=/w/halla-scshelf2102/sbs/pdbforce/jlab-HPC
+## ** ATTENTION!! Read the instructions below before execution.
+## 1. Either copy modified ../setenv.sh file to the current directory
+##    (ie jlab-HPC/misc) before executing this script, or,
+##    execute this script from jlab-HPC directory.
+## 2. It is mandatory to set the "workflowname" and "outdirpath" variables
+##    properly in the submit-gmn-jobs.sh script, before executing this script.
+## ----
+source setenv.sh
 
 # defining arrays of run numbers and segments
-# rnums=(11449 11451 11452 11456 11493 11494 11495 11496 11551 11554)
-# nsegs=(33 30 106 175 42 61 61 54 28 18)
-rnums=(11436 11500 11547)
-nsegs=(63 61 76)
+# Eg: use following arrays to replay all the SBS4-SBS50% LH2 runs:
+# -------------------------
+# rnums=(11589 11590 11592)
+# nsegs=(14 73 27)
+# -------------------------
+rnums=(13503 13793)
+nsegs=(151 98)
 
 index=0
 for i in ${rnums[@]}; do
