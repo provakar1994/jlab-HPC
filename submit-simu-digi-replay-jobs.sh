@@ -21,11 +21,11 @@ fjobid=$4       # event number to start at
 njobs=$5        # total no. of jobs to submit 
 run_on_ifarm=$6 # 1=>Yes (If true, runs all jobs on ifarm)
 # Workflow name (Not relevant if run_on_ifarm = 1)
-#workflowname=inelastic_sbs8_0p_g4sbs_deeN
+#workflowname=
 # Specify a directory on volatile to store g4sbs, sbsdig, & replayed files.
 # Working on a single directory is convenient & safe for the above mentioned
 # three processes to run smoothly.
-#outdirpath=/lustre19/expphy/volatile/halla/sbs/seeds/sbs8_inelastic
+#outdirpath=
 
 # Checking the environments
 if [[ ! -d $SCRIPT_DIR ]]; then

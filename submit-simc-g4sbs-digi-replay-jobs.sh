@@ -46,11 +46,11 @@ njobs=$4        # total no. of jobs to submit
 run_on_ifarm=$5 # 1=>Yes (If true, runs all jobs on ifarm)
 # ----/\---- Above variables are taken as arguments to this script ---/\---- # 
 # Workflow name
-#workflowname=sbs8_0p_simc_deen
+#workflowname=
 # Specify a directory on volatile to store simc, g4sbs, sbsdig, & replayed outfiles.
 # Working on a single directory is convenient & safe for the above mentioned
 # four processes to run coherently without any error.
-#outdirpath=/lustre19/expphy/volatile/halla/sbs/seeds/simc_test
+#outdirpath=
 # -------------------------------------------------------------------------- #
 
 # Sanity check 0: Checking the environments
