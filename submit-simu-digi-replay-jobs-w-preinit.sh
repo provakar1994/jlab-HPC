@@ -7,6 +7,10 @@
 # ---------                                                                 #
 # P. Datta <pdbforce@jlab.org> CREATED 11-09-2022                           #
 # ---------                                                                 #
+# Original file from P. Datta                                               #
+# MODIFIED by E. Fuchey <efuchey@jlab.org> on 2023/10/02                    #
+# to accomodate *true* preinitialization file scripts/                      #
+# ---------                                                                 #
 # ** Do not tamper with this sticker! Log any updates to the script above.  #
 # ------------------------------------------------------------------------- #
 

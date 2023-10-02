@@ -5,6 +5,10 @@
 # ---------                                                                 #
 # P. Datta <pdbforce@jlab.org> CREATED 11-09-2022                           #
 # ---------                                                                 #
+# Original file from P. Datta                                               #
+# MODIFIED by E. Fuchey <efuchey@jlab.org> on 2023/10/02                    #
+# to accomodate *true* preinitialization file scripts/                      #
+# ---------                                                                 #
 # ** Do not tamper with this sticker! Log any updates to the script above.  #
 # ------------------------------------------------------------------------- #
 
@@ -13,16 +17,17 @@
 #SBATCH --mem-per-cpu=1500
 
 # list of arguments
-preinit=$1
-postscript=$2
-nevents=$3
-outfilebase=$4
-outdirpath=$5
-run_on_ifarm=$6
-g4sbsenv=$7
-ANAVER=$8      # Analyzer version
-useJLABENV=$9  # Use 12gev_env instead of modulefiles?
-JLABENV=${10}  # /site/12gev_phys/softenv.sh version
+macro=$1
+preinit=$2
+postscript=$3
+nevents=$4
+outfilebase=$5
+outdirpath=$6
+run_on_ifarm=$7
+g4sbsenv=$8
+ANAVER=$9      # Analyzer version
+useJLABENV=${10}  # Use 12gev_env instead of modulefiles?
+JLABENV=${11}  # /site/12gev_phys/softenv.sh version
 
 # paths to necessary libraries (ONLY User specific part) ---- #
 export G4SBS=$g4sbsenv
@@ -53,6 +58,7 @@ fi
 source $G4SBS/bin/g4sbs.sh
 
 # creating post script
+cp $G4SBS'/script/'${macro}'.mac' $postscript
 echo '/g4sbs/filename '$outfilebase'.root' >>$postscript
 echo '/g4sbs/run '$nevents >>$postscript
 #cat $postscript
