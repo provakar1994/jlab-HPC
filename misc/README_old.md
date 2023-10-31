@@ -35,7 +35,7 @@ Here is a list of processess that can be executed using the scripts present in t
 - `python3` 
  
 ## 4. Quick start:
-1. Run initial_setup.sh and include valid paths to working build directories where appropriate.
+1. Modify `setenv.sh` appropriately.
 2. Identify the `submit-` script relevant for the process you want to carry out. See section 2 ("Processes") for help.
 3. Open the script using an editor and carefully  go through the instructions written at the top.
 4. On the terminal, type the name of the script and hit return.

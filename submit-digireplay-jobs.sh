@@ -19,7 +19,7 @@ fjobid=$5     # first job id
 njobs=$6      # total no. of jobs to submit
 run_on_ifarm=$7
 # workflow name
-workflowname=
+#workflowname=
 
 # Checking the environments
 if [[ ! -d $SCRIPT_DIR ]]; then
