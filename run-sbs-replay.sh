@@ -67,6 +67,7 @@ export DB_DIR=$SBS_REPLAY/DB
 export OUT_DIR=$SWIF_JOB_WORK_DIR
 export LOG_DIR=$SWIF_JOB_WORK_DIR
 
+echo 'DB_DIR='$DB_DIR
 echo 'OUT_DIR='$OUT_DIR
 echo 'LOG_DIR='$LOG_DIR
 

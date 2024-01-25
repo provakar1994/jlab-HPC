@@ -38,6 +38,9 @@ if [[ $run_on_ifarm == 1 ]]; then
 fi
 echo -e 'Work directory = '$SWIF_JOB_WORK_DIR
 
+experiment="${sbsconfig:0:3}"
+config="${sbsconfig:3}"
+
 # Enabling module
 MODULES=/etc/profile.d/modules.sh 
 if [[ $(type -t module) != function && -r ${MODULES} ]]; then 
@@ -68,7 +71,16 @@ if [[ -f .rootrc ]]; then
 fi
 cp $SBS/run_replay_here/.rootrc $SWIF_JOB_WORK_DIR
 
-analyzer -b -q 'replay_gmn_mc.C+("'$inputfile'",'$sbsconfig','$maxevents')'
+if [ $experiment == 'GMN' ] #GMN replay
+then
+    analyzer -b -q 'replay_gmn_mc.C+("'$inputfile'",'$config','$maxevents')'    
+fi
+
+if [ $experiment == 'GEN' ] #GEN replay
+then
+    analyzer -b -q 'replay_gen_mc.C+("'$inputfile'",'$config','$maxevents')'    
+fi
+
 
 # move output files
 mv $OUT_DIR'/replayed_'$inputfile'.root' $DATA_DIR

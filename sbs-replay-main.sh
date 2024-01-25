@@ -27,6 +27,7 @@ workflowname=test_workflow
 # Specify a directory on volatile to store replayed ROOT files
 outdirpath=
 
+
 type=0  # 1 = multi run from txt file, 0 = single run
 
 # Checking the environments
@@ -41,7 +42,7 @@ elif [[ ! -d $SBS_REPLAY ]]; then
 fi
 
 #Description of how to run if the user puts in a wrong input
-if [ "$#" -ne 6 ] && [ "$#" -ne 3 ] && [ "$#" -ne 7 ]; then
+if [ "$#" -ne 6 ] && [ "$#" -ne 3 ] && [ "$#" -ne 4 ] && [ "$#" -ne 7 ]; then
     echo -e "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
     echo -e "This script expects 2 options for inputs:\n"
     echo -e "Option 1: sbs-replay-main.sh <runnum> <prefix> <nevents> <maxsegments> <segments_per_job> <run_on_ifarm> <use_sbs_gems (optional)>"
@@ -98,7 +99,7 @@ if [ $type -eq 0 ]; then
     fi
 
 elif [ $type -eq 1 ]; then   #Otherwise do a runlist replay
-    if [ "$#" -ne 3 ]; then
+    if [ "$#" -ne 3 ] && [ "$#" -ne 4 ]; then
 	echo -e "!!!! Error, runlist replay needs 3 arguments !!!!"
 	echo -e "sbs-replay-main.sh <runlist> <maxsegments> <segments_per_job> <use_sbs_gems (optional)>\n"
 	exit
@@ -106,7 +107,14 @@ elif [ $type -eq 1 ]; then   #Otherwise do a runlist replay
     nevents=-1
     maxsegments=$2 
     segments_per_job=$3 
+    use_sbs_gems=$4
     run_on_ifarm=0
+
+    #if use_sbs_gems has no input assume it is 0 (not used)
+    if [ -z "$use_sbs_gems" ]
+    then
+	use_sbs_gems=0
+    fi
 
     #read the configuration info from the text file
     if [ ! -f "$runs" ]; then

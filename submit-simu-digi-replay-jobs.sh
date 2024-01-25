@@ -15,7 +15,7 @@ source setenv.sh
 
 # List of arguments
 preinit=$1      # G4SBS preinit macro w/o file extention (Must be located at $G4SBS/scripts)
-sbsconfig=$2    # SBS configuration (Valid options: 4,7,11,14,8,9)
+sbsconfig=$2    # SBS configuration (Valid options: GMN4,GMN7,GMN11,GMN14,GMN8,GMN9,GEN2,GEN3,GEN4)
 nevents=$3      # No. of events to generate per job
 fjobid=$4       # first job id
 njobs=$5        # total no. of jobs to submit 
@@ -92,14 +92,14 @@ fi
 
 # Choosing the right GEM config for digitization
 gemconfig=0
-if [[ ($sbsconfig -eq 4) || ($sbsconfig -eq 7) ]]; then
+if [[ ($sbsconfig == GMN4) || ($sbsconfig == GMN7) ]]; then
     gemconfig=12
-elif [[ $sbsconfig -eq 11 ]]; then
+elif [[ $sbsconfig == GMN11 ]]; then
     gemconfig=10
-elif [[ ($sbsconfig -eq 14) || ($sbsconfig -eq 8) || ($sbsconfig -eq 9) ]]; then
+elif [[ ($sbsconfig == GMN14) || ($sbsconfig == GMN8) || ($sbsconfig == GMN9) || ($sbsconfig == GEN2) || ($sbsconfig == GEN3) || ($sbsconfig == GEN4) ]]; then
     gemconfig=8
 else
-    echo -e "Enter valid SBS config! Valid options: 4,7,11,14,8,9"
+    echo -e "Enter valid SBS config! Valid options: GMN4,GMN7,GMN11,GMN14,GMN8,GMN9,GEN2,GEN3,GEN4"
     exit;
 fi
 

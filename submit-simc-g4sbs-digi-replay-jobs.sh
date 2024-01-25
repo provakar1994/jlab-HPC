@@ -14,7 +14,7 @@
 # ----------------------------------------------------------------------------------- #
 # 1. This script takes 5 arguments:                                                   #
 #    a. SIMC infile w/o file extention. Must be located at $SIMC/infiles directory.   #
-#    b. SBS configuration (Valid options: 4,7,11,14,8,9)                              #
+#    b. SBS configuration (Valid options: GMN4,GMN7,GMN11,GMN14,GMN8,GMN9,GEN2,GEN3,GEN4) #
 #    c. First job id.                                                                 #
 #    d. Total no. of jobs to submit.                                                  #
 #    e. Flag to force all jobs to run on ifarm. (1=>YES) Very useful for debugging.   #
@@ -75,7 +75,7 @@ if [[ "$#" -ne 5 ]]; then
     echo -e " \n --!!--\n ERROR! Illegal number of arguments!! \n ------"
     echo -e " This script takes 5 arguments: <infile> <sbsconfig> <fjobid> <njobs> <run_on_ifarm>"
     echo -e "  1. <infile>       : SIMC infile w/o file extention. Must be located at SIMC/infiles directory."
-    echo -e "  2. <sbsconfig>    : SBS configuration (Valid options: 4,7,11,14,8,9)."  
+    echo -e "  2. <sbsconfig>    : SBS configuration (Valid options: GMN4,GMN7,GMN11,GMN14,GMN8,GMN9,GEN2,GEN3,GEN4)."  
     echo -e "  3. <fjobid>       : First job id."  
     echo -e "  4. <njobs>        : Total no. of jobs to submit."
     echo -e "  5. <run_on_ifarm> : 1=>Yes (If true, runs all jobs on ifarm)"
@@ -163,14 +163,14 @@ fi
 
 # Choosing the right GEM config for digitization
 gemconfig=0
-if [[ ($sbsconfig -eq 4) || ($sbsconfig -eq 7) ]]; then
+if [[ ($sbsconfig == GMN4) || ($sbsconfig == GMN7) ]]; then
     gemconfig=12
-elif [[ $sbsconfig -eq 11 ]]; then
+elif [[ $sbsconfig == GMN11 ]]; then
     gemconfig=10
-elif [[ ($sbsconfig -eq 14) || ($sbsconfig -eq 8) || ($sbsconfig -eq 9) ]]; then
+elif [[ ($sbsconfig == GMN14) || ($sbsconfig == GMN8) || ($sbsconfig == GMN9) || ($sbsconfig == GEN2) || ($sbsconfig == GEN3) || ($sbsconfig == GEN4) ]]; then
     gemconfig=8
 else
-    echo -e "Enter valid SBS config! Valid options: 4,7,11,14,8,9"
+    echo -e "Enter valid SBS config! Valid options: GMN4,GMN7,GMN11,GMN14,GMN8,GMN9,GEN2,GEN3,GEN4"
     exit;
 fi
 

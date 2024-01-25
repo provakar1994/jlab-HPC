@@ -47,7 +47,7 @@ Here is a list of processess that can be executed using the scripts present in t
 2. Modify the environment variables (SCRIPT_DIR, SIMC, G4SBS, LIBSBSDIG, etc.) appropriately. 
 3. On the terminal type `submit-simu-digi-replay-jobs.sh` and hit return to see the list of required arguments.
 4. Finally execute: <br>
-`submit-simu-digi-replay-jobs.sh example 4 100000 0 10 0` <br>
+`submit-simu-digi-replay-jobs.sh example GMN4 100000 0 10 0` <br>
 \*\*(Assuming the g4sbs macro, named example.mac, is placed in $G4SBS/scripts directory and we want to run 10 jobs with 100K events per job for GMn SBS4 configuration.)
 
 ## 5. Useful SWIF2 commands:
