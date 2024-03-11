@@ -125,7 +125,7 @@ do
 
     aggsumscript=$SCRIPT_DIR'/agg-g4sbs-job-summary.sh'
 
-    if [[ ($i == 0) || (! -f $g4sbssumtable) ]]; then
+    if [[ ($i == 0) || (! -f $aggsumoutfile) ]]; then
 	$aggsumscript $aggsuminfile '1' $aggsumoutfile $SCRIPT_DIR
     fi
     if [[ $run_on_ifarm -ne 1 ]]; then
