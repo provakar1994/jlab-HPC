@@ -11,4 +11,4 @@ find "$dir" -type f -exec touch {} +
 else
 echo "Directory does not exist: $dir"
 fi
-done < "$DIR_FILE
+done < "$DIR_FILE"
