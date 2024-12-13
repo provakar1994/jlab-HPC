@@ -71,6 +71,9 @@ else
     echo -e "[run-sbsdig.sh] ERROR!! Enter valid GEM config!"
     exit;
 fi
+if [[ $sbsconfig -eq GEN2 || $sbsconfig -eq GEN3 || $sbsconfig -eq GEN4 ]]; then
+    dbfile=$LIBSBSDIG/db/db_gen_conf_8gemmodules_$sbsconfig.dat
+fi
 
 # creating input text file
 echo $infilename >>$txtfile
