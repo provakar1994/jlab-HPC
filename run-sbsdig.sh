@@ -60,6 +60,12 @@ elif [[ $gemconfig -eq 10 ]]; then
     dbfile=$LIBSBSDIG/db/db_gmn_conf_10gemmodules.dat
 elif [[ $gemconfig -eq 12 ]]; then
     dbfile=$LIBSBSDIG/db/db_gmn_conf_12gemmodules.dat
+elif [[ $gemconfig -eq -1 ]]; then #GEP-1
+    dbfile=$LIBSBSDIG/db/db_gep1_conf_single-analyzer.dat
+elif [[ $gemconfig -eq -2 ]]; then #GEP-2
+    dbfile=$LIBSBSDIG/db/db_gep2_conf_single-analyzer.dat
+elif [[ $gemconfig -eq -3 ]]; then #GEP-3
+    dbfile=$LIBSBSDIG/db/db_gep3_conf_single-analyzer.dat    
 else
     echo -e "[run-sbsdig.sh] ERROR!! Enter valid GEM config!"
     exit;

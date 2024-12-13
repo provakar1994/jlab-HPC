@@ -8,10 +8,17 @@
 # P. Datta <pdbforce@jlab.org> CREATED 11-09-2022                           #
 # ---------                                                                 #
 # ** Do not tamper with this sticker! Log any updates to the script above.  #
+# ---------                                                                 #
+# S. Seeds <sseeds@jlab.org> Added version control machinery                #
 # ------------------------------------------------------------------------- #
 
 # Setting necessary environments via setenv.sh
 source setenv.sh
+
+# Set path to version information
+USER_VERSION_PATH="$SCRIPT_DIR/misc/version_control/user_env_version.conf"
+# Check to verify information is at location and update as necessary
+$SCRIPT_DIR/misc/version_control/check_and_update_versions.sh
 
 # List of arguments
 preinit=$1      # G4SBS preinit macro w/o file extention (Must be located at $G4SBS/scripts)
@@ -27,7 +34,7 @@ workflowname=
 # three processes to run smoothly.
 outdirpath=
 
-# Checking the environments
+# Sanity check 0: Checking the environments
 if [[ ! -d $SCRIPT_DIR ]]; then
     echo -e '\nERROR!! Please set "SCRIPT_DIR" path properly in setenv.sh script!\n'; exit;
 elif [[ ! -d $G4SBS ]]; then
@@ -42,7 +49,7 @@ elif [[ ! -d $SBS_REPLAY ]]; then
     echo -e '\nERROR!! Please set "SBS_REPLAY" path properly in setenv.sh script!\n'; exit;
 fi
 
-# Validating the number of arguments provided
+# Sanity check 1: Validating the number of arguments provided
 if [[ "$#" -ne 6 ]]; then
     echo -e "\n--!--\n Illegal number of arguments!!"
     echo -e " This script expects 6 arguments: <preinit> <sbsconfig> <nevents> <fjobid> <njobs> <run_on_ifarm>\n"
@@ -72,6 +79,14 @@ else
     done
 fi
 
+# Sanity check 2: Finding matching G4SBS preinit macro for SIMC infile
+g4sbsmacro=$G4SBS'/scripts/'$preinit'.mac'
+if [[ ! -f $g4sbsmacro ]]; then
+    echo -e "\n!!!!!!!! ERROR !!!!!!!!!"
+    echo -e "G4SBS preinit macro, $g4sbsmacro, doesn't exist! Aborting!\n"
+    exit;
+fi
+
 # Create the output directory if necessary
 if [[ ! -d $outdirpath ]]; then
     { #try
@@ -98,8 +113,15 @@ elif [[ $sbsconfig == GMN11 ]]; then
     gemconfig=10
 elif [[ ($sbsconfig == GMN14) || ($sbsconfig == GMN8) || ($sbsconfig == GMN9) || ($sbsconfig == GEN2) || ($sbsconfig == GEN3) || ($sbsconfig == GEN4) ]]; then
     gemconfig=8
+    # GEP has only one SBS GEM config. However, each setting has a different DB file for digitization. To handle that without major change to the code we are using gemconfig flag.
+elif [[ $sbsconfig == GEP1 ]]; then
+    gemconfig=-1
+elif [[ $sbsconfig == GEP2 ]]; then
+    gemconfig=-2
+elif [[ $sbsconfig == GEP3 ]]; then
+    gemconfig=-3        
 else
-    echo -e "Enter valid SBS config! Valid options: GMN4,GMN7,GMN11,GMN14,GMN8,GMN9,GEN2,GEN3,GEN4"
+    echo -e "Enter valid SBS config! Valid options: GMN4,GMN7,GMN11,GMN14,GMN8,GMN9,GEN2,GEN3,GEN4,GEP1,GEP2,GEP3"
     exit;
 fi
 
@@ -159,6 +181,39 @@ do
 	$digireplayscript
     fi
 done
+
+# add a copy of the version control to outputdir for traceability
+# Define the path for the version file within the output directory
+VERSION_FILE="$outdirpath/${preinit}_version.txt"
+
+# Function to append version information to the file
+append_version_info() {
+    # Add the date and time of creation to the version file
+    echo "# Version file created on $(date '+%Y-%m-%d %H:%M:%S')" >> "$VERSION_FILE"
+
+    # Add the configured run range to the version file
+    ljobid=$((fjobid + njobs))
+    echo "# This run range from $fjobid to $ljobid" >> "$VERSION_FILE"
+
+    # Append the contents of last_update.conf to the version file
+    echo "" >> "$VERSION_FILE" # Add an empty line for readability
+    cat "$USER_VERSION_PATH" >> "$VERSION_FILE"
+    echo "" >> "$VERSION_FILE" # Add an empty line for readability
+}
+
+# Check if the VERSION_FILE already exists
+if [ -f "$VERSION_FILE" ]; then
+    # VERSION_FILE exists, append new version information
+    echo "Appending version information to existing $VERSION_FILE"
+    append_version_info
+else
+    # VERSION_FILE does not exist, create it and add version information
+    echo "Creating new $VERSION_FILE and adding version information"
+    touch "$VERSION_FILE" # Ensure the file exists before appending
+    append_version_info
+fi
+
+echo "Version information has been saved to $VERSION_FILE"
 
 # run the workflow and then print status
 if [[ $run_on_ifarm -ne 1 ]]; then

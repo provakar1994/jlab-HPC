@@ -1,6 +1,10 @@
 #!/bin/bash
+
+# Get the directory of the current script
+touch_dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+
 # Path to the file containing directories
-DIR_FILE="directories.txt"
+DIR_FILE=$touch_dir/"directories.txt"
 # Read each line (directory path) from the file
 while IFS= read -r dir
 do
@@ -11,4 +15,4 @@ find "$dir" -type f -exec touch {} +
 else
 echo "Directory does not exist: $dir"
 fi
-done < "$DIR_FILE
+done < "$DIR_FILE"
