@@ -92,7 +92,7 @@ fi
 
 if [ $prefix = 'gep5' ] #GEP replay #Hard-coded for 3-stream.
 then
-    analyzer -b -q 'replay_gep.C+('$runnum','$maxevents','$firstevent','\"$prefix\"','$firstsegment','$maxsegments','$maxstream',0,0,'$firststream','$use_sbs_gems')'
+    analyzer -b -q 'replay_gep.C+('$runnum','$maxevents','$firstevent','\"$prefix\"','$firstsegment','$maxsegments','$maxstream',0,0,'$firststream','$use_sbs_gems',1)'
 fi
 
 outfilename=$OUT_DIR'/'$prefix'_*'$runnum'*.root'

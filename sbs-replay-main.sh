@@ -23,7 +23,7 @@ maxsegments=-1
 segments_per_job=-1
 use_sbs_gems=             # 0 = no sbs gems, 1 = use sbs gems
 # Workflow name (Not relevant if run_on_ifarm = 1)
-workflowname=GEP_replay_test_1
+workflowname=GEP_replay_singlerun
 # Specify a directory on volatile to store replayed ROOT files
 outdirpath=/volatile/halla/sbs/mcjacob/GEP/Kin3
 
