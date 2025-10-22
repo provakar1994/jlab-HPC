@@ -6,6 +6,7 @@
 # ---------                                                                 #
 # P. Datta <pdbforce@jlab.org> CREATED 11-09-2022                           #
 # Sean Jeffas <sj9ry@virginia.edu> Updated 07-25-2023                       #
+# Jacob McMurtry <rby2vw@virginia.edu> Updated 10-22-2025                   #
 # ---------                                                                 #
 # ** Do not tamper with this sticker! Log any updates to the script above.  #
 # ------------------------------------------------------------------------- #
@@ -91,39 +92,22 @@ do
 		    inputstring+=' -input '$cachefile' '$mssfilename' '
 		fi
 	    fi
-	    jobname=$prefix'_replay_'$runnum'_segment'$i'_stream'$j
-	    echo 'Submitting job '$jobname' with '$nsegments' segments, runnum='$runnum
 
-	    scriptrun=$script' '$j' '$j' '$runnum' '$nevents' 0 '$prefix' '$i' 1 '$use_sbs_gems' '$DATA_PATH' '$outdirpath' '$run_on_ifarm' '$ANALYZER' '$SBSOFFLINE' '$SBS_REPLAY' '$ANAVER' '$useJLABENV' '$JLAB
-	    addjobcmd='add-job -workflow '$workflowname' -partition production -name '$jobname' -cores 1 -disk 25GB -ram 3000MB '$inputstring' '$scriptrun
+	    if [[ $prefix == "gep5" ]]; then
+	    	jobname=$prefix'_replay_'$runnum'_segment'$i'_stream'$j
+	    	echo 'Submitting job '$jobname' with '$nsegments' segments, runnum='$runnum
+
+	    	scriptrun=$script' '$j' '$j' '$runnum' '$nevents' 0 '$prefix' '$i' 1 '$use_sbs_gems' '$DATA_PATH' '$outdirpath' '$run_on_ifarm' '$ANALYZER' '$SBSOFFLINE' '$SBS_REPLAY' '$ANAVER' '$useJLABENV' '$JLAB
+	    	addjobcmd='add-job -workflow '$workflowname' -partition production -name '$jobname' -cores 1 -disk 25GB -ram 3000MB '$inputstring' '$scriptrun
 	    
-	    if [[ $run_on_ifarm -ne 1 ]]; then
-	        swif2 $addjobcmd
-		#echo $addjobcmd
-	    else
-		$scriptrun
+	    	if [[ $run_on_ifarm -ne 1 ]]; then
+	        	swif2 $addjobcmd
+			#echo $addjobcmd
+	    	else
+			$scriptrun
+	    	fi
 	    fi
 	fi
-	
-#	if [[ $prefix == "gep5" && -f "testfilename" ]]; then
-	  
-#	    jobname=$prefix'_replay_'$runnum'_segment'$i'_stream'$j
-#	    echo 'Submitting job '$jobname' with '$nsegments' segments, runnum='$runnum
-#	    #echo 'Input string = '$inputstring
-#	    
-#	    #scriptrun=$script' '$firststream' '$maxstream' '$runnum' '$nevents' 0 '$prefix' '$firstsegment' 1 '$use_sbs_gems' '$DATA_PATH' '$outdirpath' '$run_on_ifarm' '$ANALYZER' '$SBSOFFLINE' '$SBS_REPLAY' '$ANAVER' '$useJLABENV' '$JLAB
-#	    scriptrun=$script' '$j' '$j' '$runnum' '$nevents' 0 '$prefix' '$i' 1 '$use_sbs_gems' '$DATA_PATH' '$outdirpath' '$run_on_ifarm' '$ANALYZER' '$SBSOFFLINE' '$SBS_REPLAY' '$ANAVER' '$useJLABENV' '$JLAB
-#	    addjobcmd='add-job -workflow '$workflowname' -partition production -name '$jobname' -cores 1 -disk 25GB -ram 3000MB '$inputstring' '$scriptrun
-	    
-#	    if [[ $run_on_ifarm -ne 1 ]]; then
-#	        swif2 $addjobcmd
-#		#echo $addjobcmd
-#	    else
-#		$scriptrun
-#	    fi
-#	    #nsegments=0
-#	fi
-	  
     done # end loop on streams 0-2
     
     # After adding any files found from this segment number to the job,
@@ -139,7 +123,7 @@ do
 	    echo 'Submitting job '$jobname' with '$nsegments' segments, runnum='$runnum
 	    #echo 'Input string = '$inputstring
 	    
-	    scriptrun=$script' 0 0 '$runnum' '$nevents' 0 '$prefix' '$firstsegment' '$nsegments' '$use_sbs_gems' '$DATA_PATH' '$outdirpath' '$run_on_ifarm' '$ANALYZER' '$SBSOFFLINE' '$SBS_REPLAY' '$ANAVER' '$useJLABENV' '$JLABENV
+	    scriptrun=$script' 2 0 '$runnum' '$nevents' 0 '$prefix' '$firstsegment' '$nsegments' '$use_sbs_gems' '$DATA_PATH' '$outdirpath' '$run_on_ifarm' '$ANALYZER' '$SBSOFFLINE' '$SBS_REPLAY' '$ANAVER' '$useJLABENV' '$JLABENV
 	    #echo 'Script Run = '$scriptrun
 	    addjobcmd='add-job -workflow '$workflowname' -partition production -name '$jobname' -cores 1 -disk 25GB -ram 3000MB '$inputstring' '$scriptrun
 	    
