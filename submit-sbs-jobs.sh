@@ -91,15 +91,9 @@ do
 		    inputstring+=' -input '$cachefile' '$mssfilename' '
 		fi
 	    fi
-	fi
-	
-	if [[ $prefix == "gep5" ]]; then
-	  
 	    jobname=$prefix'_replay_'$runnum'_segment'$i'_stream'$j
 	    echo 'Submitting job '$jobname' with '$nsegments' segments, runnum='$runnum
-	    #echo 'Input string = '$inputstring
-	    
-	    #scriptrun=$script' '$firststream' '$maxstream' '$runnum' '$nevents' 0 '$prefix' '$firstsegment' 1 '$use_sbs_gems' '$DATA_PATH' '$outdirpath' '$run_on_ifarm' '$ANALYZER' '$SBSOFFLINE' '$SBS_REPLAY' '$ANAVER' '$useJLABENV' '$JLAB
+
 	    scriptrun=$script' '$j' '$j' '$runnum' '$nevents' 0 '$prefix' '$i' 1 '$use_sbs_gems' '$DATA_PATH' '$outdirpath' '$run_on_ifarm' '$ANALYZER' '$SBSOFFLINE' '$SBS_REPLAY' '$ANAVER' '$useJLABENV' '$JLAB
 	    addjobcmd='add-job -workflow '$workflowname' -partition production -name '$jobname' -cores 1 -disk 25GB -ram 3000MB '$inputstring' '$scriptrun
 	    
@@ -109,8 +103,26 @@ do
 	    else
 		$scriptrun
 	    fi
-	    #nsegments=0
 	fi
+	
+#	if [[ $prefix == "gep5" && -f "testfilename" ]]; then
+	  
+#	    jobname=$prefix'_replay_'$runnum'_segment'$i'_stream'$j
+#	    echo 'Submitting job '$jobname' with '$nsegments' segments, runnum='$runnum
+#	    #echo 'Input string = '$inputstring
+#	    
+#	    #scriptrun=$script' '$firststream' '$maxstream' '$runnum' '$nevents' 0 '$prefix' '$firstsegment' 1 '$use_sbs_gems' '$DATA_PATH' '$outdirpath' '$run_on_ifarm' '$ANALYZER' '$SBSOFFLINE' '$SBS_REPLAY' '$ANAVER' '$useJLABENV' '$JLAB
+#	    scriptrun=$script' '$j' '$j' '$runnum' '$nevents' 0 '$prefix' '$i' 1 '$use_sbs_gems' '$DATA_PATH' '$outdirpath' '$run_on_ifarm' '$ANALYZER' '$SBSOFFLINE' '$SBS_REPLAY' '$ANAVER' '$useJLABENV' '$JLAB
+#	    addjobcmd='add-job -workflow '$workflowname' -partition production -name '$jobname' -cores 1 -disk 25GB -ram 3000MB '$inputstring' '$scriptrun
+	    
+#	    if [[ $run_on_ifarm -ne 1 ]]; then
+#	        swif2 $addjobcmd
+#		#echo $addjobcmd
+#	    else
+#		$scriptrun
+#	    fi
+#	    #nsegments=0
+#	fi
 	  
     done # end loop on streams 0-2
     
