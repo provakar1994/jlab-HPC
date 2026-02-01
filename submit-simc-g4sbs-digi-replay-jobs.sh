@@ -61,9 +61,9 @@ outdirpath=
 # ------ Variables to allocate time and memory for each type of jobs  ------ #
 # -------------------------------------------------------------------------- #
 # SIMC jobs
-SIMCJOBram='100MB'
+SIMCJOBram='600MB'
 SIMCJOBdisk='250MB'
-SIMCJOBtime='6h'
+SIMCJOBtime='18h'
 # g4sbs jobs
 G4SBSJOBram='1200MB'
 G4SBSJOBdisk='1GB'
@@ -155,9 +155,10 @@ fi
 
 # Sanity check 4: Finding matching G4SBS preinit macro for SIMC infile
 g4sbsmacro=$G4SBS'/scripts/'$infile'.mac'
-if [[ ! -f $g4sbsmacro ]]; then
+g4sbsmacrogmn=$G4SBS'/scripts/gmn/'$infile'.mac'
+if [[ ! -f $g4sbsmacro && ! -f $g4sbsmacrogmn ]]; then
     echo -e "\n!!!!!!!! ERROR !!!!!!!!!"
-    echo -e "G4SBS preinit macro, $g4sbsmacro, doesn't exist! Aborting!\n"
+    echo -e "G4SBS preinit macro, $g4sbsmacro or $g4sbsmacrogmn, doesn't exist! Aborting!\n"
     exit;
 fi
 
