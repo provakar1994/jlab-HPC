@@ -23,10 +23,11 @@
 # 1) Using /group/halla/modulefiles (Recommended)
 # E.g. ANAVER='1.7.4' loads analyzer/1.7.4. It comes with:
 # root/6.26.10, gcc/12.3.0, python/3.11.4,x & evio/5.3
-ANAVER='1.7.12-sbs6'  # Analyzer version
+# Note: Use ANAVER='1.7.12-sbs6' for GEP
+ANAVER='1.7.12'  # Analyzer version
 # 2) Using /site/12gev_phys/softenv.sh (NOT recommended!) 
 # ** $ANALYZER will be needed for this
-useJLABENV=1    # =1, forces 12gev_phys environment
+useJLABENV=0    # =1, forces 12gev_phys environment
 JLABENV='2.6'   # /site/12gev_phys/softenv.sh version
 # ********************************************** # 
 
