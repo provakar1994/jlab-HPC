@@ -6,6 +6,7 @@
 # ---------                                                                 #
 # P. Datta <pdbforce@jlab.org> CREATED 11-09-2022                           #
 # Sean Jeffas <sj9ry@virginia.edu> Updated 07-25-2023                       #
+# Jacob McMurtry <rby2vw@virginia.edu> Updated 10-22-2025                   #
 # ---------                                                                 #
 # ** Do not tamper with this sticker! Log any updates to the script above.  #
 # ------------------------------------------------------------------------- #
@@ -39,6 +40,9 @@ export DATA_DIR=/cache/$DATA_PATH
 firstsegment=0
 lastsegment=0
 nsegments=0
+firststream=0
+laststream=0
+nstreams=0
 
 # look for first segment of first stream on cache disk:
 firstsegname=$prefix'_'$runnum'.evio.0.0'
@@ -70,6 +74,9 @@ do
 	cachefile='/cache/mss/'$DATA_PATH/$eviofilename
 
 	testfilename='/mss/'$DATA_PATH/$eviofilename
+
+	firststream=$j
+	maxstream=$j
 	
 	if [ -f "$testfilename" ]; 
 	then
@@ -78,16 +85,35 @@ do
 		segment_i_added=1
 	    fi
 	    if(( !($j == 0 && $i == 0) )); then # unless this is the first segment of stream 0, add the file to the job:
-		inputstring+=' -input '$cachefile' '$mssfilename' '
+		if [[ $prefix == "gep5" ]]; then
+		    inputstring=' -input '$cachefirst' '$mssfirst' '
+		    inputstring+=' -input '$cachefile' '$mssfilename' '
+		else
+		    inputstring+=' -input '$cachefile' '$mssfilename' '
+		fi
+	    fi
+
+	    if [[ $prefix == "gep5" ]]; then
+	    	jobname=$prefix'_replay_'$runnum'_segment'$i'_stream'$j
+	    	echo 'Submitting job '$jobname' with '$nsegments' segments, runnum='$runnum
+
+	    	scriptrun=$script' '$j' '$j' '$runnum' '$nevents' 0 '$prefix' '$i' 1 '$use_sbs_gems' '$DATA_PATH' '$outdirpath' '$run_on_ifarm' '$ANALYZER' '$SBSOFFLINE' '$SBS_REPLAY' '$ANAVER' '$useJLABENV' '$JLAB
+	    	addjobcmd='add-job -workflow '$workflowname' -partition production -name '$jobname' -cores 1 -disk 25GB -ram 3000MB '$inputstring' '$scriptrun
+	    
+	    	if [[ $run_on_ifarm -ne 1 ]]; then
+	        	swif2 $addjobcmd
+			#echo $addjobcmd
+	    	else
+			$scriptrun
+	    	fi
 	    fi
 	fi
     done # end loop on streams 0-2
     
     # After adding any files found from this segment number to the job,
     # check if this is the last segment or if adding this segment caused us to reach the target number of segments per job:
-    if(( $segment_i_added == 1 )); then # if we at least found stream 0 for this segment, proceed: 
-	# increment the number of segments:
-	# NO! This was already done above! ((nsegments++))
+    if [[ $segment_i_added -eq 1 && $prefix != "gep5" ]]; then
+    #if(( $segment_i_added == 1 )); then # if we at least found stream 0 for this segment, proceed: 
 	if (( $i == $maxsegments || $nsegments == $segments_per_job )); 
 	    then # this is either the last segment or we reached the required number of segments per job. 
 	    # Go ahead and launch the job and then reset segment counter:
@@ -95,9 +121,10 @@ do
 	    jobname=$prefix'_replay_'$runnum'_segments'$firstsegment'_'$lastsegment
 	    
 	    echo 'Submitting job '$jobname' with '$nsegments' segments, runnum='$runnum
-	    #		echo 'Input string = '$inputstring
+	    #echo 'Input string = '$inputstring
 	    
-	    scriptrun=$script' '$runnum' '$nevents' 0 '$prefix' '$firstsegment' '$nsegments' '$use_sbs_gems' '$DATA_PATH' '$outdirpath' '$run_on_ifarm' '$ANALYZER' '$SBSOFFLINE' '$SBS_REPLAY' '$ANAVER' '$useJLABENV' '$JLABENV
+	    scriptrun=$script' 2 0 '$runnum' '$nevents' 0 '$prefix' '$firstsegment' '$nsegments' '$use_sbs_gems' '$DATA_PATH' '$outdirpath' '$run_on_ifarm' '$ANALYZER' '$SBSOFFLINE' '$SBS_REPLAY' '$ANAVER' '$useJLABENV' '$JLABENV
+	    #echo 'Script Run = '$scriptrun
 	    addjobcmd='add-job -workflow '$workflowname' -partition production -name '$jobname' -cores 1 -disk 25GB -ram 3000MB '$inputstring' '$scriptrun
 	    
 	    if [[ $run_on_ifarm -ne 1 ]]; then
@@ -110,15 +137,14 @@ do
        	    nsegments=0
 	fi   
     else # current segment NOT added; if any segments have been added to the job, go ahead and submit the job if applicable
-	if (( $nsegments > 0 ))
-	then
+        if [[ $nsegments -gt 0 && $prefix != "gep5" ]]; then
 	    ((lastsegment=$i-1))
 	    jobname=$prefix'_replay_'$runnum'_segments'$firstsegment'_'$lastsegment
 	    
 	    echo 'Submitting job '$jobname' with '$nsegments' segments, runnum = '$runnum
 #	    echo 'Input string = "'$inputstring'"'
 
-	    scriptrun=$script' '$runnum' '$nevents' 0 '$prefix' '$firstsegment' '$nsegments' '$use_sbs_gems' '$DATA_PATH' '$outdirpath' '$run_on_ifarm' '$ANALYZER' '$SBSOFFLINE' '$SBS_REPLAY' '$ANAVER' '$useJLABENV' '$JLABENV
+	    scriptrun=$script' 0 0 '$runnum' '$nevents' 0 '$prefix' '$firstsegment' '$nsegments' '$use_sbs_gems' '$DATA_PATH' '$outdirpath' '$run_on_ifarm' '$ANALYZER' '$SBSOFFLINE' '$SBS_REPLAY' '$ANAVER' '$useJLABENV' '$JLABENV
 	    addjobcmd='add-job -workflow '$workflowname' -partition production -name '$jobname' -cores 1 -disk 25GB -ram 3000MB '$inputstring' '$scriptrun
 
 	    if [[ $run_on_ifarm -ne 1 ]]; then
@@ -130,6 +156,6 @@ do
 
 	    nsegments=0
 	fi
-	break
+	#break
     fi
 done

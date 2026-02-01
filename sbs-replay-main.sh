@@ -23,9 +23,9 @@ maxsegments=-1
 segments_per_job=-1
 use_sbs_gems=             # 0 = no sbs gems, 1 = use sbs gems
 # Workflow name (Not relevant if run_on_ifarm = 1)
-workflowname=test_workflow
+workflowname=GEP_replay_singlerun
 # Specify a directory on volatile to store replayed ROOT files
-outdirpath=
+outdirpath=/volatile/halla/sbs/mcjacob/GEP/Kin3
 
 
 type=0  # 1 = multi run from txt file, 0 = single run
@@ -140,7 +140,10 @@ if [ $prefix = 'e1209016' ]
 then
     export DATA_PATH=$GEN_DATA_PATH
 fi
-
+if [ $prefix = 'gep5' ]
+then
+    export DATA_PATH=$GEP_DATA_PATH
+fi
 
 #if use_sbs_gems has no input assume it is 0 (not used)
     if [ -z "$use_sbs_gems" ]
