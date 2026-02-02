@@ -21,7 +21,7 @@ USER_VERSION_PATH="$SCRIPT_DIR/misc/version_control/user_env_version.conf"
 $SCRIPT_DIR/misc/version_control/check_and_update_versions.sh
 
 # List of arguments
-preinit=$1      # G4SBS preinit macro w/o file extention (Must be located at $G4SBS/scripts)
+preinit=$1      # G4SBS preinit macro w/o file extention (Must be located at $G4SBS/scripts or $G4SBS/scripts/gmn)
 sbsconfig=$2    # SBS configuration (Valid options: GMN4,GMN7,GMN11,GMN14,GMN8,GMN9,GEN2,GEN3,GEN4)
 nevents=$3      # No. of events to generate per job
 fjobid=$4       # first job id
@@ -79,11 +79,12 @@ else
     done
 fi
 
-# Sanity check 2: Finding matching G4SBS preinit macro for SIMC infile
+# Sanity check 2: Checking the existance of G4SBS preinit macro
 g4sbsmacro=$G4SBS'/scripts/'$preinit'.mac'
-if [[ ! -f $g4sbsmacro ]]; then
+g4sbsmacrogmn=$G4SBS'/scripts/gmn/'$preinit'.mac'
+if [[ ! -f $g4sbsmacro && ! -f $g4sbsmacrogmn ]]; then
     echo -e "\n!!!!!!!! ERROR !!!!!!!!!"
-    echo -e "G4SBS preinit macro, $g4sbsmacro, doesn't exist! Aborting!\n"
+    echo -e "G4SBS preinit macro, $g4sbsmacro or $g4sbsmacrogmn, doesn't exist! Aborting!\n"
     exit;
 fi
 

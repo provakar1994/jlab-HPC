@@ -16,7 +16,7 @@ elif [[ ! -d $G4SBS ]]; then
     echo -e '\nERROR!! Please set "G4SBS" path properly in setenv.sh script!\n'; exit;
 fi
 
-preinit=$1      # G4SBS preinit macro w/o file extention (Must be located at $G4SBS/scripts)
+preinit=$1      # G4SBS preinit macro w/o file extention (Must be located at $G4SBS/scripts or $G4SBS/scripts/gmn)
 nevents=$2      # No. of events to generate per job
 fjobid=$3       # first job id
 njobs=$4        # total no. of jobs to submit 
@@ -54,7 +54,16 @@ else
     done
 fi
 
-# Sanity check: Create the output directory if necessary
+# Sanity check 1: Checking the existance of G4SBS preinit macro
+g4sbsmacro=$G4SBS'/scripts/'$preinit'.mac'
+g4sbsmacrogmn=$G4SBS'/scripts/gmn/'$preinit'.mac'
+if [[ ! -f $g4sbsmacro && ! -f $g4sbsmacrogmn ]]; then
+    echo -e "\n!!!!!!!! ERROR !!!!!!!!!"
+    echo -e "G4SBS preinit macro, $g4sbsmacro or $g4sbsmacrogmn, doesn't exist! Aborting!\n"
+    exit;
+fi
+
+# Sanity check 2: Create the output directory if necessary
 if [[ ! -d $outdirpath ]]; then
     { #try
 	mkdir $outdirpath
