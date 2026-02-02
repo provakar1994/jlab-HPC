@@ -26,8 +26,10 @@ if [[ $(type -t module) != function && -r ${MODULES} ]]; then
 source ${MODULES} 
 fi 
 
+module purge
+    
 if [ -d /apps/modulefiles ]; then 
-module use /apps/modulefiles 
+    module use /apps/modulefiles 
 fi 
 
 module load gcc/9.2.0 

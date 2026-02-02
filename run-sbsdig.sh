@@ -45,7 +45,8 @@ fi
 if [[ (! -d /group/halla/modulefiles) || ($useJLABENV -eq 1) ]]; then 
     source /site/12gev_phys/softenv.sh $JLABENV
 else 
-    module use /group/halla/modulefiles
+    module purge
+    module use /group/halla/modulefiles    
     module load analyzer/$ANAVER
     module list
 fi
